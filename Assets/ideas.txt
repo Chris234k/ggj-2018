@@ -24,3 +24,10 @@ oxenfree radio minigame
 lifeline
 
 two characters 1 delay
+
+
+
+
+..:: radio decoding ::..
+spin wheel
+letters are offset
