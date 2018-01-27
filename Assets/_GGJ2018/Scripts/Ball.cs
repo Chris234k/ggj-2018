@@ -25,6 +25,42 @@ public class Ball : MonoBehaviour
 		joint.autoConfigureConnectedAnchor = false;
 	}
 
+	void Update()
+	{
+		if(isRecalling)
+		{
+			Vector3 pos = recallTarget.transform.position;
+			float dist = Vector2.Distance(transform.position, pos);
+			
+			if(dist > 2.0f)
+			{
+				// Further = faster
+				float move = dist * recallSpeed;
+				move = Mathf.Max(recallSpeed, move);
+				
+				transform.position = Vector2.MoveTowards(transform.position, pos, move * Time.deltaTime);
+			}
+			else
+			{
+				localRigid.isKinematic = false;
+				isRecalling = false;
+
+				if(recallTarget != null)
+				{
+					Connect(recallTarget);
+				}
+			}	
+		}
+	}
+
+	public Vector2 Swap(Vector2 position)
+	{
+		Vector2 oldPos = transform.position;
+		transform.position = position;
+
+		return oldPos;
+	}
+
 	public void Attack()
 	{
 
@@ -48,30 +84,6 @@ public class Ball : MonoBehaviour
 
 			localRigid.isKinematic = true;
 			localRigid.velocity = Vector2.zero;
-		}
-	}
-
-	void Update()
-	{
-		if(isRecalling)
-		{
-			Vector3 pos = recallTarget.transform.position;
-			float dist = Vector2.Distance(transform.position, pos);
-			
-			if(dist > 0.005f)
-			{
-				transform.position = Vector2.MoveTowards(transform.position, pos, dist * recallSpeed * Time.deltaTime);
-			}
-			else
-			{
-				localRigid.isKinematic = false;
-				isRecalling = false;
-
-				if(recallTarget != null)
-				{
-					Connect(recallTarget);
-				}
-			}	
 		}
 	}
 

@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
 
         transform.position = transform.position + vel;
 
-        if(Input.GetMouseButton(0))
+        if(Input.GetMouseButtonDown(0))
         {
             Vector3 world_mouse_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3 dir = world_mouse_pos - transform.position;
@@ -44,9 +44,13 @@ public class Player : MonoBehaviour
 
             ball.Throw(force);
         }
-        else if (Input.GetKeyDown(KeyCode.LeftShift))
+        else if (Input.GetMouseButtonDown(1))
         {
             ball.Recall(transform.position, localRigid);
+        }
+        else if (Input.GetKeyDown(KeyCode.Space))
+        {
+            transform.position = ball.Swap(transform.position);
         }
     }
 }
