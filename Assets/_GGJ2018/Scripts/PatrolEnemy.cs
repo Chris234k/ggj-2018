@@ -6,11 +6,16 @@ using UnityEngine;
 public class PatrolEnemy : MonoBehaviour
 {
     public Rigidbody2D Rigidbody2D;
-    public float WalkingSpeed;
-    public float RedirectionTime;
 
+    public float WalkingSpeed;
+    public float RedirectionInterval;
     private int currentFacingDirection = -1;
     private float redirectionTimer;
+
+    public bool bShouldJump;
+    public float JumpStrength;
+    public float JumpInterval = 0.0f;
+    private float jumpTimer;
 
     // Use this for initialization
     void Start ()
@@ -23,10 +28,29 @@ public class PatrolEnemy : MonoBehaviour
     {
         transform.position = (Vector2)transform.position + new Vector2(currentFacingDirection * WalkingSpeed * Time.deltaTime, 0);
         redirectionTimer += Time.deltaTime;
-        if (redirectionTimer >= RedirectionTime)
+        if (bShouldJump)
         {
-            currentFacingDirection *= -1;
-            redirectionTimer = 0.0f;
+            jumpTimer += Time.deltaTime;
+        }
+        if (jumpTimer > JumpInterval)
+        {
+            Jump();
+        }
+        if (redirectionTimer > RedirectionInterval)
+        {
+            RedirectMovement();
         }
 	}
+
+    void RedirectMovement()
+    {
+        currentFacingDirection *= -1;
+        redirectionTimer = 0.0f;
+    }
+
+    void Jump()
+    {
+        jumpTimer = 0.0f;
+        Rigidbody2D.AddForce(new Vector2(0, JumpStrength));
+    }
 }
