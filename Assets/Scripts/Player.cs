@@ -4,50 +4,24 @@ using UnityEngine;
 
 public class Player : MonoBehaviour 
 {
-    public LayerMask mask;
-    GameObject lastHit;
+    public float acceleration;
+    public float maxSpeed;
+    public float friction;
+    Vector3 vel;
 
-    bool isHalf;
-
-    void Update () 
-	{
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            Teleport(Vector2.up);
-        }
-		else if (Input.GetKeyDown(KeyCode.A))
-        {
-			Teleport(Vector2.left);
-        }
-		else if (Input.GetKeyDown(KeyCode.S))
-        {
-            Teleport(Vector2.down);
-        }
-		else if (Input.GetKeyDown(KeyCode.D))
-        {
-            Teleport(Vector2.right);
-        }
-
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            isHalf = !isHalf;
-        }
-    }
-
-    void Teleport(Vector2 dir)
+    void Update()
     {
-        var hit = Physics2D.Raycast(transform.position, dir, 100, mask.value, 0);
+        float h = Input.GetAxisRaw("Horizontal");
 
-        if (hit != null && hit.collider != null && hit.collider.gameObject != null)
+        vel += new Vector3(h * acceleration, 0, 0) * Time.deltaTime;
+
+        if(vel.magnitude > maxSpeed)
         {
-            if (lastHit != null)
-            {
-                lastHit.layer = 8;
-            }
-
-            transform.position = hit.transform.position;
-            lastHit = hit.collider.gameObject;
-            lastHit.layer = 0;
+            vel = vel.normalized * maxSpeed;
         }
+
+        vel *= friction;
+
+        transform.position = transform.position + vel;
     }
 }
