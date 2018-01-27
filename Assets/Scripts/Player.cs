@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour 
 {
     public Ball ball;
@@ -13,9 +14,11 @@ public class Player : MonoBehaviour
     public float throwForce;
     Vector3 vel;
 
-    void Start()
+    Rigidbody2D localRigid;
+
+    void Awake()
     {
-        ball.Recall(transform.position);
+        localRigid = GetComponent<Rigidbody2D>();
     }
 
     void Update()
@@ -33,16 +36,17 @@ public class Player : MonoBehaviour
 
         transform.position = transform.position + vel;
 
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetMouseButton(0))
         {
             Vector3 world_mouse_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3 dir = world_mouse_pos - transform.position;
             Vector3 force = dir.normalized * throwForce;
+
             ball.Throw(force);
         }
         else if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            ball.Recall(transform.position);
+            ball.Recall(transform.position, localRigid);
         }
     }
 }

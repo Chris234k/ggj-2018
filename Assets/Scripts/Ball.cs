@@ -6,47 +6,88 @@ using UnityEngine;
 public class Ball : MonoBehaviour 
 {
 	Rigidbody2D localRigid;
-	private bool isRecalling;
+
+	bool isRecalling;
+	public float recallSpeed;
+	float recallDuration;
+	Rigidbody2D recallTarget;
+
+	bool isConnectedToPlayer;
+
+	FixedJoint2D joint;
 
 	void Awake()
 	{
 		localRigid = GetComponent<Rigidbody2D>();
+
+		joint = gameObject.AddComponent<FixedJoint2D>();
+        joint.enabled = false;
+		joint.autoConfigureConnectedAnchor = false;
 	}
 
-	public void Attack() 
+	public void Attack()
 	{
 
 	}
 
 	public void Throw(Vector2 force)
 	{
-		localRigid.AddForce(force);
-	}
-
-	public void Recall(Vector2 pos)
-	{
-		if(!isRecalling)
+		if(isConnectedToPlayer)
 		{
-			StartCoroutine(RecallRoutine(pos, 1f));
+			Disconnect();
+			localRigid.AddForce(force);
 		}
 	}
 
-	IEnumerator RecallRoutine(Vector2 pos, float duration)
+	public void Recall(Vector2 pos, Rigidbody2D target)
 	{
-		isRecalling = true;
-		localRigid.isKinematic = true;
+		if(!isRecalling && !isConnectedToPlayer)
+		{
+			isRecalling = true;
+			recallTarget = target;
+
+			localRigid.isKinematic = true;
+			localRigid.velocity = Vector2.zero;
+		}
+	}
+
+	void Update()
+	{
+		if(isRecalling)
+		{
+			Vector3 pos = recallTarget.transform.position;
+			float dist = Vector2.Distance(transform.position, pos);
+			
+			if(dist > 0.005f)
+			{
+				transform.position = Vector2.MoveTowards(transform.position, pos, dist * recallSpeed * Time.deltaTime);
+			}
+			else
+			{
+				localRigid.isKinematic = false;
+				isRecalling = false;
+
+				if(recallTarget != null)
+				{
+					Connect(recallTarget);
+				}
+			}	
+		}
+	}
+
+	void Connect(Rigidbody2D target)
+	{
 		localRigid.velocity = Vector2.zero;
-		
-		float elapsedTime = 0;
-		while(elapsedTime < duration)
-		{
-			float t = elapsedTime / duration;
-			transform.position = Vector2.Lerp(transform.position, pos, t);
+		joint.enabled = true;
+		joint.connectedBody = target;
+		isConnectedToPlayer = true;
+	}
 
-			yield return new WaitForEndOfFrame();
-			elapsedTime += Time.deltaTime;
-		}
-		localRigid.isKinematic = false;
-		isRecalling = false;
+	void Disconnect()
+	{
+		localRigid.velocity = Vector2.zero;
+		joint.enabled = false;
+		joint.connectedBody = null;
+		isConnectedToPlayer = false;
 	}
 }
