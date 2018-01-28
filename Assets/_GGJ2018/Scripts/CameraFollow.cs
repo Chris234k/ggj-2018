@@ -32,7 +32,7 @@ public class CameraFollow : MonoBehaviour
             posNoZ.z = target.transform.position.z;
 
             // Weighted towards target1
-            Vector3 look = Vector3.Lerp(target.transform.position, target2.transform.position, 0.3f);
+            Vector3 look = Vector3.Lerp(target.transform.position, target2.transform.position, 0.7f);
             Vector3 targetDirection = (look - posNoZ);
 
             interpVelocity = targetDirection.magnitude * CameraSnapSpeed;
