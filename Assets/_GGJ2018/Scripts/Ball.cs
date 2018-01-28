@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
-public class Ball : MonoBehaviour 
+[RequireComponent(typeof(Rigidbody2D), typeof(CircleCollider2D))]
+public class Ball : MonoBehaviour
 {
 	Rigidbody2D localRigid;
+	CircleCollider2D localCol;
 
 	bool isRecalling;
 	public float recallSpeed;
@@ -19,6 +20,7 @@ public class Ball : MonoBehaviour
 	void Awake()
 	{
 		localRigid = GetComponent<Rigidbody2D>();
+		localCol = GetComponent<CircleCollider2D>();
 
 		joint = gameObject.AddComponent<FixedJoint2D>();
         joint.enabled = false;
@@ -70,9 +72,17 @@ public class Ball : MonoBehaviour
 		}
 	}
 
-	public void Attack()
+	public void Interact()
 	{
+		var hits = Physics2D.OverlapCircleAll(transform.position, localCol.radius * 400f);
 
+		for(int i = 0; i < hits.Length; i++)
+		{
+			if(hits[i])
+			{
+				hits[i].gameObject.SendMessage("BallInteract", SendMessageOptions.DontRequireReceiver);
+			}
+		}
 	}
 
 	public void Throw(Vector2 force)

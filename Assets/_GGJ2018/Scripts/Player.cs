@@ -37,6 +37,10 @@ public class Player : MonoBehaviour
         {
             ball.Recall(transform.position, gameObject);
         }
+        else if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            ball.Interact();
+        }
         else if (Input.GetKeyDown(KeyCode.Space))
         {
             transform.position = ball.Swap(transform.position);
