@@ -11,8 +11,9 @@ public class Key : MonoBehaviour, IBallable
 
     private SpriteRenderer spriteRenderer;
     // Use this for initialization
-    void Start () {
-		
+    void Start ()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();	
 	}
 	
 	// Update is called once per frame
@@ -32,7 +33,7 @@ public class Key : MonoBehaviour, IBallable
     {
         if (coll.gameObject.tag == "Player" && !BallInteractKey)
         {
-            Destroy(coll.gameObject);
+            ActivateKey();
         }
 
     }
