@@ -27,9 +27,9 @@ public class Player : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0))
         {
-            Vector3 world_mouse_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector3 dir = world_mouse_pos - transform.position;
-            Vector3 force = dir.normalized * throwForce;
+            Vector2 world_mouse_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 dir = (world_mouse_pos - (Vector2)transform.position).normalized;
+            Vector2 force = dir * throwForce;
 
             ball.Throw(force);
         }
