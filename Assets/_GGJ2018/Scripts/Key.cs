@@ -28,6 +28,15 @@ public class Key : MonoBehaviour, IBallable
         }
     }
 
+    void OnTriggerEnter2D(Collider2D coll)
+    {
+        if (coll.gameObject.tag == "Player" && !BallInteractKey)
+        {
+            Destroy(coll.gameObject);
+        }
+
+    }
+
     void ActivateKey()
     {
         if (OnKeyActivated != null)

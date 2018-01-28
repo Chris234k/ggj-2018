@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
@@ -39,6 +40,11 @@ public class CameraFollow : MonoBehaviour
             targetPos = transform.position + (targetDirection.normalized * interpVelocity * Time.deltaTime);
             transform.position = Vector3.Lerp(transform.position, targetPos + offset, 0.25f);
 
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 }
