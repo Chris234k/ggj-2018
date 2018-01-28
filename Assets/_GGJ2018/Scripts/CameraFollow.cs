@@ -8,6 +8,7 @@ public class CameraFollow : MonoBehaviour
     private float interpVelocity;
     public float CameraSnapSpeed = 5.0f;
     public GameObject target;
+    public GameObject target2;
     public Vector3 offset;
     Vector3 targetPos;
     // Use this for initialization
@@ -20,11 +21,18 @@ public class CameraFollow : MonoBehaviour
     void FixedUpdate()
     {
         if (target)
-        {
+        {            
+            float distance = Vector3.Distance(target.transform.position, target2.transform.position);
+            float orthoSize = Mathf.Clamp(distance, 5, 10);
+            orthoSize = Mathf.Lerp(Camera.main.orthographicSize, orthoSize, 0.05f);
+            Camera.main.orthographicSize = orthoSize;
+
             Vector3 posNoZ = transform.position;
             posNoZ.z = target.transform.position.z;
 
-            Vector3 targetDirection = (target.transform.position - posNoZ);
+            // Weighted towards target1
+            Vector3 look = Vector3.Lerp(target.transform.position, target2.transform.position, 0.3f);
+            Vector3 targetDirection = (look - posNoZ);
 
             interpVelocity = targetDirection.magnitude * CameraSnapSpeed;
 
