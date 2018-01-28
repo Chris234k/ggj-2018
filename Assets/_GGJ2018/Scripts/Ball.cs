@@ -81,7 +81,7 @@ public class Ball : MonoBehaviour
 			interactParticles.Emit(1);
 			interactParticles.Play(); // Doesn't play in some scenes unless Play is also called ??
 
-			var hits = Physics2D.OverlapCircleAll(transform.position, localCol.radius * 400f);
+			var hits = Physics2D.OverlapCircleAll(transform.position, localCol.radius * 8f);
 
 			for(int i = 0; i < hits.Length; i++)
 			{
