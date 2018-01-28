@@ -41,7 +41,10 @@ public class CameraFollow : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, targetPos + offset, 0.25f);
 
         }
-
+    }
+    
+    void Update()
+    {
         if (Input.GetKeyDown(KeyCode.R))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
