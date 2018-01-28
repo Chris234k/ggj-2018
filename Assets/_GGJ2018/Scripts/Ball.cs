@@ -10,7 +10,7 @@ public class Ball : MonoBehaviour
 	bool isRecalling;
 	public float recallSpeed;
 	float recallDuration;
-	Rigidbody2D recallTarget;
+	GameObject recallTarget;
 
 	bool isConnectedToPlayer;
 
@@ -47,9 +47,9 @@ public class Ball : MonoBehaviour
 
 				if(recallTarget != null)
 				{
-					Connect(recallTarget);
+					Connect();
 				}
-			}	
+			}
 		}
 	}
 
@@ -75,7 +75,7 @@ public class Ball : MonoBehaviour
 		}
 	}
 
-	public void Recall(Vector2 pos, Rigidbody2D target)
+	public void Recall(Vector2 pos, GameObject target)
 	{
 		if(!isRecalling && !isConnectedToPlayer)
 		{
@@ -87,19 +87,19 @@ public class Ball : MonoBehaviour
 		}
 	}
 
-	void Connect(Rigidbody2D target)
+	void Connect()
 	{
+		gameObject.SetActive(false);
+		transform.position = recallTarget.transform.position;
 		localRigid.velocity = Vector2.zero;
-		joint.enabled = true;
-		joint.connectedBody = target;
 		isConnectedToPlayer = true;
 	}
 
 	void Disconnect()
 	{
+		gameObject.SetActive(true);
+		transform.position = recallTarget.transform.position;
 		localRigid.velocity = Vector2.zero;
-		joint.enabled = false;
-		joint.connectedBody = null;
 		isConnectedToPlayer = false;
 	}
 }
