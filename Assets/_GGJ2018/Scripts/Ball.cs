@@ -17,6 +17,8 @@ public class Ball : MonoBehaviour
 
 	FixedJoint2D joint;
 
+	public ParticleSystem interactParticles;
+
 	void Awake()
 	{
 		localRigid = GetComponent<Rigidbody2D>();
@@ -74,13 +76,18 @@ public class Ball : MonoBehaviour
 
 	public void Interact()
 	{
-		var hits = Physics2D.OverlapCircleAll(transform.position, localCol.radius * 400f);
+		if(!isConnectedToPlayer)
+		{	
+			interactParticles.Emit(1);
 
-		for(int i = 0; i < hits.Length; i++)
-		{
-			if(hits[i])
+			var hits = Physics2D.OverlapCircleAll(transform.position, localCol.radius * 400f);
+
+			for(int i = 0; i < hits.Length; i++)
 			{
-				hits[i].gameObject.SendMessage("BallInteract", SendMessageOptions.DontRequireReceiver);
+				if(hits[i])
+				{
+					hits[i].gameObject.SendMessage("BallInteract", SendMessageOptions.DontRequireReceiver);
+				}
 			}
 		}
 	}
