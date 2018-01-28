@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     public float maxSpeed;
     public float friction;
 
+    public float gravityModifier;
+
     public float throwForce;
 
     CharacterController2D controller;
@@ -45,7 +47,7 @@ public class Player : MonoBehaviour
     {
         float h = Input.GetAxisRaw("Horizontal");
 
-        Vector2 vel = Physics2D.gravity;
+        Vector2 vel = Physics2D.gravity * gravityModifier;
         vel.x = h * acceleration;
 
         vel *= Time.fixedDeltaTime;
