@@ -55,10 +55,17 @@ public class Ball : MonoBehaviour
 
 	public Vector2 Swap(Vector2 position)
 	{
-		Vector2 oldPos = transform.position;
-		transform.position = position;
+		if(!isConnectedToPlayer)
+		{
+			Vector2 oldPos = transform.position;
+			transform.position = position;
 
-		return oldPos;
+			return oldPos;
+		}
+		else
+		{
+			return position;
+		}
 	}
 
 	public void Attack()
