@@ -23,7 +23,12 @@ public class Player : MonoBehaviour
 
     void Awake()
     {
-        controller = GetComponent<CharacterController2D>();
+        controller = GetComponent<CharacterController2D>();        
+    }
+
+    void Start()
+    {
+        ball.Recall(transform.position, gameObject);
     }
 
     void Update()
