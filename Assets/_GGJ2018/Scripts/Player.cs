@@ -84,6 +84,7 @@ public class Player : MonoBehaviour
         if (LastCheckPoint != null)
         {
             transform.position = LastCheckPoint.transform.position;
+            ball.Recall(transform.position, gameObject);
         }
     }
 }
