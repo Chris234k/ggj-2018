@@ -60,6 +60,8 @@ public class Ball : MonoBehaviour
 			Vector2 oldPos = transform.position;
 			transform.position = position;
 
+			localRigid.velocity = Vector2.zero;
+
 			return oldPos;
 		}
 		else
