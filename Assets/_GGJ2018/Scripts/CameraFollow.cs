@@ -24,7 +24,7 @@ public class CameraFollow : MonoBehaviour
         {            
             float distance = Vector3.Distance(target.transform.position, target2.transform.position);
             float orthoSize = Mathf.Clamp(distance, 5, 10);
-            orthoSize = Mathf.Lerp(Camera.main.orthographicSize, orthoSize, 0.05f);
+            orthoSize = Mathf.Lerp(Camera.main.orthographicSize, orthoSize, 0.005f);
             Camera.main.orthographicSize = orthoSize;
 
             Vector3 posNoZ = transform.position;
