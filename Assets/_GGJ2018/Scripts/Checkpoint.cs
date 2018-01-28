@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpikeObstacle : MonoBehaviour {
+public class Checkpoint : MonoBehaviour
+{
 
 	// Use this for initialization
 	void Start () {
@@ -10,7 +11,8 @@ public class SpikeObstacle : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
 		
 	}
 
@@ -21,10 +23,9 @@ public class SpikeObstacle : MonoBehaviour {
             Player playerReference = coll.gameObject.GetComponent<Player>();
             if (playerReference != null)
             {
-                playerReference.ResetPlayer();
+                playerReference.SetCheckpoint(this);
             }
+            GetComponent<SpriteRenderer>().color = Color.red;
         }
-
     }
-
 }

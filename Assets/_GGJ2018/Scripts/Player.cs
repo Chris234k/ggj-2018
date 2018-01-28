@@ -5,7 +5,7 @@ using UnityEngine;
 using Prime31;
 
 [RequireComponent(typeof(CharacterController2D))]
-public class Player : MonoBehaviour 
+public class Player : MonoBehaviour
 {
     public Ball ball;
 
@@ -17,6 +17,8 @@ public class Player : MonoBehaviour
 
     public float throwForce;
 
+    private Checkpoint LastCheckPoint;
+
     CharacterController2D controller;
 
     void Awake()
@@ -26,7 +28,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
             Vector2 world_mouse_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 dir = (world_mouse_pos - (Vector2)transform.position).normalized;
@@ -57,7 +59,7 @@ public class Player : MonoBehaviour
 
         vel *= Time.fixedDeltaTime;
 
-        if(vel.magnitude > maxSpeed)
+        if (vel.magnitude > maxSpeed)
         {
             vel = vel.normalized * maxSpeed;
         }
@@ -65,5 +67,18 @@ public class Player : MonoBehaviour
         vel *= friction;
 
         controller.move(vel);
+    }
+
+    public void SetCheckpoint(Checkpoint inCheckpoint)
+    {
+        LastCheckPoint = inCheckpoint;
+    }
+
+    public void ResetPlayer()
+    {
+        if (LastCheckPoint != null)
+        {
+            transform.position = LastCheckPoint.transform.position;
+        }
     }
 }

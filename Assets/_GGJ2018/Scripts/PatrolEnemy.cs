@@ -46,7 +46,11 @@ public class PatrolEnemy : MonoBehaviour
     {
         if (coll.gameObject.tag == "Player")
         {
-            Destroy(coll.gameObject);
+            Player playerReference = coll.gameObject.GetComponent<Player>();
+            if (playerReference != null)
+            {
+                playerReference.ResetPlayer();
+            }
         }
 
     }
